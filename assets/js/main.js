@@ -919,6 +919,64 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   })();
 
+  /* ---------------------------------------------- 404: the owl follows the cursor, texts in the visitor's language */
+  (() => {
+    const sec = $('[data-nf]');
+    if (!sec) return;
+    // the file is one for every language: pick the texts of the missing URL's language (/uk/..., /pl/...)
+    try {
+      const langs = JSON.parse(($('[data-nf-langs]', sec) || {}).textContent || '{}');
+      const seg = (location.pathname.split('/').filter(Boolean)[0] || '').toLowerCase();
+      const L = langs[seg];
+      if (L && seg !== 'en') {
+        $$('[data-nf-t]', sec).forEach((el) => { const v = L[el.getAttribute('data-nf-t')]; if (v) el.textContent = v; });
+        const home = $('[data-nf-home]', sec);
+        if (home) home.setAttribute('href', (L.prefix || '') + '/');
+        document.documentElement.lang = seg;
+      }
+    } catch (e) { /* keep English */ }
+    const owl = $('[data-owl]', sec);
+    if (!owl) return;
+    const pupils = $$('[data-pupil]', owl);
+    const head = $('[data-owl-head]', owl);
+    const cap = $('[data-owl-cap]', owl);
+    const svgUnit = () => 320 / (owl.getBoundingClientRect().width || 320); // px -> svg units
+    let raf = 0, px = null, py = null, lastMove = 0;
+    const look = (x, y) => {
+      const u = svgUnit();
+      pupils.forEach((p) => {
+        const r = p.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy) || 1;
+        const k = Math.min(1, d / 260) * 9; // up to 9 svg units of travel
+        p.style.transform = 'translate(' + (dx / d * k).toFixed(2) + 'px,' + (dy / d * k).toFixed(2) + 'px)';
+      });
+      if (head) {
+        const hr = head.getBoundingClientRect();
+        const t = Math.max(-1, Math.min(1, (x - (hr.left + hr.width / 2)) / 420));
+        const v = Math.max(-1, Math.min(1, (y - (hr.top + hr.height / 2)) / 420));
+        head.style.transform = 'rotate(' + (t * 7).toFixed(2) + 'deg) translateY(' + (v * 4 * u).toFixed(2) + 'px)';
+        if (cap && !owl.matches(':hover')) cap.style.transform = 'rotate(' + (-t * 5).toFixed(2) + 'deg)';
+      }
+    };
+    const onMove = (e) => {
+      px = e.clientX; py = e.clientY; lastMove = performance.now();
+      if (!raf) raf = requestAnimationFrame(() => { raf = 0; look(px, py); });
+    };
+    if (!reduceMotion) {
+      window.addEventListener('pointermove', onMove, { passive: true });
+      // no pointer for a while (touch devices, idle): the owl looks around by itself
+      setInterval(() => {
+        if (performance.now() - lastMove < 2500) return;
+        const r = owl.getBoundingClientRect();
+        look(r.left + r.width * (Math.random() * 1.6 - .3), r.top + r.height * (Math.random() * 1.2 - .2));
+      }, 2600);
+    }
+    // a tap: a little hop
+    owl.addEventListener('click', () => { owl.classList.remove('is-hop'); void owl.offsetWidth; owl.classList.add('is-hop'); });
+    owl.addEventListener('animationend', (e) => { if (e.animationName === 'owl-hop') owl.classList.remove('is-hop'); });
+  })();
+
   /* ---------------------------------------------- hero: cursor halo over the grid */
   $$('[data-halo]').forEach((sec) => {
     if (!window.matchMedia('(pointer: fine)').matches) return;

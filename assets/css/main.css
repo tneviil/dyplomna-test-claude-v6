@@ -2183,3 +2183,54 @@ html.cur-on textarea, html.cur-on [contenteditable="true"] { cursor: text !impor
   .hdr__right { gap: 6px; }
   .hdr .lang__dd summary { padding: 0 8px; gap: 6px; }
 }
+
+/* ------------------------------------------------------------ 404: a 3-D "404" with the graduate owl in the zero
+   (owner, 15.09.2026): the numerals are extruded with a stack of text-shadows; the owl sits in the counter of the 0,
+   its eyes, head and cap follow the cursor, it blinks, spreads its wings on hover and hops on tap; drafts float around */
+.nf { padding: calc(var(--hdr-h) + 24px) 0 clamp(40px, 5vw, 72px); overflow: hidden; text-align: center; }
+.nf__scene { position: relative; max-width: 980px; margin: 0 auto; padding: 24px 0 8px; }
+.nf__big { position: relative; z-index: 2; display: flex; justify-content: center; gap: .01em; font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(150px, 26vw, 400px); line-height: 1; letter-spacing: -.04em; color: #F7F9FD; -webkit-text-stroke: 1px rgba(48, 57, 84, .14); user-select: none;
+  text-shadow: 1px 1px 0 #6A7EBA, 2px 2px 0 #667AB4, 3px 3px 0 #6375AE, 4px 4px 0 #5F71A7, 5px 5px 0 #5B6CA1, 6px 6px 0 #57689B, 7px 7px 0 #546495, 8px 8px 0 #505F8F, 9px 9px 0 #4C5B89, 10px 10px 0 #495682, 11px 11px 0 #45527C, 12px 12px 0 #414D76, 13px 13px 0 #3E4970, 14px 14px 0 #3A456A, 15px 15px 0 #364064, 16px 16px 0 #323C5D, 17px 17px 0 #2F3757, 18px 18px 0 #2B3351, 26px 34px 44px rgba(27, 32, 53, .32); }
+.nf__d { position: relative; display: inline-block; }
+/* the owl in the hole of the 0: about a third of the glyph, centred on the counter */
+.nf__hole { position: absolute; left: 50%; top: 53%; width: .36em; transform: translate(-50%, -50%); text-shadow: none; -webkit-text-stroke: 0; }
+.nf__copy { position: relative; z-index: 3; max-width: 720px; margin: 28px auto 0; }
+.nf__copy .lead { margin-top: 16px; }
+.nf__sub { margin: 14px auto 0; max-width: 56ch; color: var(--muted); font-size: 16px; line-height: 1.55; }
+.nf__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+.owl { position: relative; display: block; width: 100%; height: auto; overflow: visible; animation: owl-bob 4.6s ease-in-out infinite; cursor: pointer; }
+.owl .owl__head, .owl .owl__cap, .owl .owl__wing, .owl .owl__pupil, .owl .owl__lid, .owl .owl__tassel { transform-box: fill-box; }
+.owl__head { transform-origin: 50% 70%; transition: transform .35s var(--ease); }
+.owl__cap { transform-origin: 50% 90%; transition: transform .45s var(--ease); }
+.owl__pupil { transition: transform .22s ease-out; }
+.owl__lid { transform-origin: 50% 0%; transform: scaleY(0); animation: owl-blink 5.2s ease-in-out infinite; }
+.owl__wing { transition: transform .45s var(--ease); }
+.owl__wing--l { transform-origin: 100% 0%; }
+.owl__wing--r { transform-origin: 0% 0%; }
+.owl:hover .owl__wing--l, .owl.is-hop .owl__wing--l { transform: rotate(-28deg); }
+.owl:hover .owl__wing--r, .owl.is-hop .owl__wing--r { transform: rotate(28deg); }
+.owl:hover .owl__cap { transform: translateY(-6px) rotate(-6deg); }
+.owl__tassel { transform-origin: 50% 0%; animation: owl-tassel 2.6s ease-in-out infinite; }
+.owl.is-hop { animation: owl-hop .7s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes owl-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes owl-blink { 0%, 91%, 100% { transform: scaleY(0); } 94%, 97% { transform: scaleY(1); } }
+@keyframes owl-tassel { 0%, 100% { transform: rotate(-9deg); } 50% { transform: rotate(9deg); } }
+@keyframes owl-hop { 0% { transform: translateY(0) scale(1, 1); } 25% { transform: translateY(-22px) scale(.96, 1.06); } 60% { transform: translateY(0) scale(1.05, .94); } 100% { transform: translateY(0) scale(1, 1); } }
+/* drafts floating around the numerals: white sheets with three grey lines */
+.nf__paper { position: absolute; width: 64px; height: 82px; border-radius: 8px; background: #fff; border: 1px solid var(--line); box-shadow: 0 16px 30px -18px rgba(27, 32, 53, .35);
+  display: grid; align-content: start; gap: 9px; padding: 14px 10px; z-index: 1; animation: paper-float 7s ease-in-out infinite; }
+.nf__paper b { display: block; height: 4px; border-radius: 4px; background: rgba(48, 57, 84, .14); }
+.nf__paper b:nth-child(2) { width: 70%; } .nf__paper b:nth-child(3) { width: 85%; }
+.nf__paper--1 { left: 4%; top: 6%; transform: rotate(-12deg); animation-delay: -1s; }
+.nf__paper--2 { right: 3%; top: 2%; transform: rotate(10deg); animation-duration: 8s; animation-delay: -3s; }
+.nf__paper--3 { left: 10%; bottom: 4%; transform: rotate(8deg); animation-duration: 6.4s; animation-delay: -2s; }
+.nf__paper--4 { right: 8%; bottom: 0; transform: rotate(-7deg); z-index: 3; animation-duration: 7.6s; animation-delay: -4s; }
+@keyframes paper-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
+@media (max-width: 720px) {
+  .nf__big { font-size: clamp(120px, 44vw, 200px); text-shadow: 1px 1px 0 #6A7EBA, 2px 2px 0 #6376AE, 3px 3px 0 #5C6DA3, 4px 4px 0 #556597, 5px 5px 0 #4E5D8B, 6px 6px 0 #475480, 7px 7px 0 #404C74, 8px 8px 0 #394468, 9px 9px 0 #323B5D, 10px 10px 0 #2B3351, 12px 16px 24px rgba(27, 32, 53, .3); }
+  .nf__hole { width: .5em; }
+  .nf__paper { width: 44px; height: 58px; padding: 9px 7px; gap: 6px; }
+  .nf__paper--1 { left: 0; } .nf__paper--2 { right: 0; } .nf__paper--3 { left: 2%; } .nf__paper--4 { right: 2%; }
+}
+@media (prefers-reduced-motion: reduce) { .owl, .owl__lid, .owl__tassel, .nf__paper { animation: none; } }
